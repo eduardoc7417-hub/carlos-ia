@@ -25,4 +25,4 @@ while IFS= read -r line; do
 done < "$CMDS"
 send "echo FIM-DIAG"; sleep 3
 kill "$PID" 2>/dev/null
-sed -n '/INICIO-DIAG/,$p' "$LOG" | tr -d '\r' | sed 's/\x1b\[[0-9;?]*[a-zA-Z]//g' | cut -c1-200
+sed -n '/INICIO-DIAG/,$p' "$LOG" | tr -d '\r' | sed -e 's/\x1b\]3008;[^\x1b]*\x1b\\//g' -e 's/\x1b\[[0-9;?]*[a-zA-Z]//g' | cut -c1-200

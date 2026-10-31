@@ -1,0 +1,296 @@
+#!/usr/bin/python3
+"""Otimizador Carlos: serviço leve, sem modelo de IA.
+
+Aplica apenas os ajustes de AJUSTES, guarda o valor original de cada um e os reverte ao parar.
+Os caminhos são fixos neste arquivo: a configuração só liga ou desliga pelo identificador.
+Tudo o que estiver fora da lista vira sugestão em estado.json; nada mais é alterado.
+"""
+import argparse
+import json
+import os
+import re
+import signal
+import subprocess
+import sys
+import tempfile
+import threading
+import time
+from pathlib import Path
+
+CICLO_S = 60
+SUGESTOES_INICIO_S = 120
+SUGESTOES_INTERVALO_S = 6 * 3600
+
+# quando: "sempre", "zram" (há swap em zram) ou "bateria" (sem tomada).
+# energia=True: não mexe se o power-profiles-daemon estiver cuidando da energia.
+AJUSTES = [
+    {"id": "memoria-swappiness-zram", "titulo": "Preferir zram para memória pouco usada",
+     "caminho": "proc/sys/vm/swappiness", "valor": "100", "quando": "zram"},
+    {"id": "memoria-page-cluster-zram", "titulo": "Leitura unitária do zram",
+     "caminho": "proc/sys/vm/page-cluster", "valor": "0", "quando": "zram"},
+    {"id": "memoria-mglru-protecao", "titulo": "Proteger páginas em uso quando a memória aperta",
+     "caminho": "sys/kernel/mm/lru_gen/min_ttl_ms", "valor": "1000", "quando": "sempre"},
+    {"id": "memoria-thp-madvise", "titulo": "Páginas enormes só para quem pede",
+     "caminho": "sys/kernel/mm/transparent_hugepage/enabled", "valor": "madvise", "quando": "sempre"},
+    {"id": "energia-escrita-bateria", "titulo": "Agrupar escritas em disco na bateria",
+     "caminho": "proc/sys/vm/dirty_writeback_centisecs", "valor": "1500", "quando": "bateria"},
+    {"id": "energia-nmi-bateria", "titulo": "Desligar o vigia NMI na bateria",
+     "caminho": "proc/sys/kernel/nmi_watchdog", "valor": "0", "quando": "bateria"},
+    {"id": "energia-epp-bateria", "titulo": "Processador econômico na bateria",
+     "caminho": "sys/devices/system/cpu/cpu*/cpufreq/energy_performance_preference",
+     "valor": "balance_power", "quando": "bateria", "energia": True},
+]
+
+
+class Otimizador:
+    def __init__(self, raiz="/", etc="/etc/carlos-otimizador", estado="/var/lib/carlos-otimizador",
+                 publico="/run/carlos-otimizador"):
+        self.raiz = Path(raiz)
+        self.arquivo_config = Path(etc) / "config.json"
+        self.arquivo_originais = Path(estado) / "originais.json"
+        self.arquivo_publico = Path(publico) / "estado.json"
+        self.sugestoes = []
+        self.situacoes = {}
+        self.originais = self._ler_json(self.arquivo_originais, {})
+
+    @staticmethod
+    def _ler_json(caminho, padrao):
+        try:
+            return json.loads(Path(caminho).read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return padrao
+
+    @staticmethod
+    def _gravar_json(caminho, dados):
+        caminho = Path(caminho)
+        caminho.parent.mkdir(parents=True, exist_ok=True)
+        fd, temporario = tempfile.mkstemp(dir=caminho.parent, prefix=".tmp-")
+        with os.fdopen(fd, "w", encoding="utf-8") as saida:
+            json.dump(dados, saida, ensure_ascii=False, indent=1)
+        os.chmod(temporario, 0o644)
+        os.replace(temporario, caminho)
+
+    def habilitados(self):
+        """Todos os ajustes da lista, menos os que a configuração desligar."""
+        config = self._ler_json(self.arquivo_config, {})
+        desligados = set(config.get("desligados", [])) if isinstance(config, dict) else set()
+        if isinstance(config, dict) and config.get("ativo") is False:
+            return []
+        return [a for a in AJUSTES if a["id"] not in desligados]
+
+    def _caminhos(self, ajuste):
+        return [str(p) for p in sorted(self.raiz.glob(ajuste["caminho"]))]
+
+    @staticmethod
+    def _ler_valor(caminho):
+        texto = Path(caminho).read_text().strip()
+        # Formato "always [madvise] never": o valor ativo fica entre colchetes.
+        selecionado = re.search(r"\[([^\]]+)\]", texto)
+        return selecionado.group(1) if selecionado else texto
+
+    def _tem_zram(self):
+        try:
+            return any(l.startswith("/dev/zram") or "/zram" in l.split()[0]
+                       for l in (self.raiz / "proc/swaps").read_text().splitlines()[1:] if l.strip())
+        except OSError:
+            return False
+
+    def _na_bateria(self):
+        """Só afirma bateria se há uma bateria e nenhuma tomada ligada."""
+        fontes = self.raiz / "sys/class/power_supply"
+        bateria = tomada = False
+        try:
+            for fonte in fontes.iterdir():
+                tipo = (fonte / "type").read_text().strip()
+                if tipo == "Battery" and (fonte / "present").exists():
+                    bateria = (fonte / "present").read_text().strip() == "1" or bateria
+                elif tipo == "Battery":
+                    bateria = True
+                elif tipo in ("Mains", "USB") and (fonte / "online").read_text().strip() == "1":
+                    tomada = True
+        except OSError:
+            return False
+        return bateria and not tomada
+
+    def _ppd_ativo(self):
+        if self.raiz != Path("/"):
+            return (self.raiz / "ppd-ativo").exists()
+        try:
+            return subprocess.run(["systemctl", "is-active", "--quiet", "power-profiles-daemon.service"],
+                                  timeout=10).returncode == 0
+        except (OSError, subprocess.SubprocessError):
+            return False
+
+    def _condicao(self, ajuste):
+        if ajuste["quando"] == "zram" and not self._tem_zram():
+            return False
+        if ajuste["quando"] == "bateria" and not self._na_bateria():
+            return False
+        if ajuste.get("energia") and self._ppd_ativo():
+            return False
+        return True
+
+    def aplicar(self):
+        """Um ciclo: aplica o que a condição pede e desfaz o que deixou de valer."""
+        habilitados = {a["id"] for a in self.habilitados()}
+        for ajuste in AJUSTES:
+            caminhos = self._caminhos(ajuste)
+            if not caminhos:
+                self.situacoes[ajuste["id"]] = "não disponível neste computador"
+                continue
+            if ajuste["id"] not in habilitados:
+                self._reverter_ajuste(ajuste)
+                self.situacoes[ajuste["id"]] = "desligado na configuração"
+            elif self._condicao(ajuste):
+                self.situacoes[ajuste["id"]] = self._aplicar_ajuste(ajuste, caminhos)
+            else:
+                self._reverter_ajuste(ajuste)
+                self.situacoes[ajuste["id"]] = "em espera: condição não atendida"
+        self._gravar_json(self.arquivo_originais, self.originais)
+        self.publicar()
+
+    def _aplicar_ajuste(self, ajuste, caminhos):
+        guardados = self.originais.setdefault(ajuste["id"], {})
+        situacao = "aplicado"
+        for caminho in caminhos:
+            try:
+                atual = self._ler_valor(caminho)
+                if caminho in guardados:
+                    # Alguém mudou depois de nós: a escolha dessa pessoa vale.
+                    if atual != ajuste["valor"]:
+                        situacao = "mantido o valor definido fora do Otimizador"
+                    continue
+                guardados[caminho] = atual
+                if atual != ajuste["valor"]:
+                    Path(caminho).write_text(ajuste["valor"])
+            except OSError as erro:
+                guardados.pop(caminho, None)
+                situacao = f"não foi possível aplicar ({erro.strerror})"
+        if not guardados:
+            del self.originais[ajuste["id"]]
+        return situacao
+
+    def _reverter_ajuste(self, ajuste):
+        guardados = self.originais.pop(ajuste["id"], {})
+        for caminho, original in guardados.items():
+            try:
+                if self._ler_valor(caminho) == ajuste["valor"]:
+                    Path(caminho).write_text(original)
+            except OSError:
+                pass
+
+    def reverter(self):
+        """Restaura o que foi alterado, também depois de uma queda do serviço."""
+        for ajuste in AJUSTES:
+            self._reverter_ajuste(ajuste)
+        self._gravar_json(self.arquivo_originais, self.originais)
+        for ajuste in AJUSTES:
+            self.situacoes[ajuste["id"]] = "revertido"
+        self.publicar()
+
+    def coletar_sugestoes(self):
+        """Só leitura: o que está fora da lista segura vira texto para o usuário decidir."""
+        sugestoes = []
+        try:
+            pressao = (self.raiz / "proc/pressure/memory").read_text()
+            media = float(re.search(r"^full .*avg300=([\d.]+)", pressao, re.M).group(1))
+            if media >= 5:
+                sugestoes.append({"id": "memoria-pressao",
+                                  "texto": f"A memória está sob pressão ({media:.0f}% do tempo travado). "
+                                           "Fechar programas pesados pode ajudar."})
+        except (OSError, AttributeError, ValueError):
+            pass
+        try:
+            trocas = (self.raiz / "proc/swaps").read_text().splitlines()[1:]
+            if not any(l.strip() for l in trocas):
+                sugestoes.append({"id": "memoria-sem-swap",
+                                  "texto": "Não há swap nem zram ativos. Ativar zram pode evitar travamentos "
+                                           "quando a memória acaba."})
+        except OSError:
+            pass
+        try:
+            disco = os.statvfs(self.raiz)
+            if disco.f_blocks and disco.f_bavail / disco.f_blocks < 0.1:
+                sugestoes.append({"id": "disco-cheio",
+                                  "texto": "O disco do sistema tem menos de 10% livre. Liberar espaço evita "
+                                           "lentidão e falhas."})
+        except OSError:
+            pass
+        sugestoes.extend(self._sugestoes_inicializacao())
+        self.sugestoes = sugestoes
+        self.publicar()
+
+    def _sugestoes_inicializacao(self):
+        if self.raiz != Path("/"):
+            return []
+        try:
+            saida = subprocess.run(["systemd-analyze", "blame", "--no-pager"], capture_output=True,
+                                   text=True, timeout=30).stdout
+        except (OSError, subprocess.SubprocessError):
+            return []
+        lentos = []
+        for linha in saida.splitlines()[:5]:
+            encontrado = re.match(r"\s*(?:(\d+)min )?([\d.]+)s (\S+)", linha)
+            if encontrado:
+                segundos = int(encontrado.group(1) or 0) * 60 + float(encontrado.group(2))
+                if segundos >= 10:
+                    lentos.append(f"{encontrado.group(3)} ({segundos:.0f} s)")
+        if lentos:
+            return [{"id": "inicializacao-lenta",
+                     "texto": "Serviços lentos na inicialização: " + ", ".join(lentos) +
+                              ". Avalie se você precisa deles."}]
+        return []
+
+    def publicar(self):
+        lista = [{"id": a["id"], "titulo": a["titulo"], "situacao": self.situacoes.get(a["id"], "aguardando")}
+                 for a in AJUSTES]
+        self._gravar_json(self.arquivo_publico, {"atualizado": int(time.time()), "ajustes": lista,
+                                                 "sugestoes": self.sugestoes})
+
+
+def servir(otimizador):
+    parada = threading.Event()
+    signal.signal(signal.SIGTERM, lambda *_: parada.set())
+    signal.signal(signal.SIGINT, lambda *_: parada.set())
+    proximas_sugestoes = time.monotonic() + SUGESTOES_INICIO_S
+    while not parada.is_set():
+        otimizador.aplicar()
+        if time.monotonic() >= proximas_sugestoes:
+            otimizador.coletar_sugestoes()
+            proximas_sugestoes = time.monotonic() + SUGESTOES_INTERVALO_S
+        # O laço só acorda uma vez por minuto; o sinal interrompe a espera.
+        parada.wait(CICLO_S)
+    otimizador.reverter()
+
+
+def main():
+    leitor = argparse.ArgumentParser(description="Otimizador Carlos")
+    leitor.add_argument("comando", choices=["servir", "aplicar", "reverter", "sugestoes", "lista", "estado"])
+    # Só para os testes: troca a raiz do sistema por uma árvore falsa.
+    leitor.add_argument("--raiz", default="/", help=argparse.SUPPRESS)
+    leitor.add_argument("--etc", default="/etc/carlos-otimizador", help=argparse.SUPPRESS)
+    leitor.add_argument("--estado", default="/var/lib/carlos-otimizador", help=argparse.SUPPRESS)
+    leitor.add_argument("--publico", default="/run/carlos-otimizador", help=argparse.SUPPRESS)
+    args = leitor.parse_args()
+
+    if args.comando == "lista":
+        for ajuste in AJUSTES:
+            print(f"{ajuste['id']}: {ajuste['titulo']} ({ajuste['quando']})")
+        return 0
+    otimizador = Otimizador(args.raiz, args.etc, args.estado, args.publico)
+    if args.comando == "estado":
+        print(json.dumps(Otimizador._ler_json(otimizador.arquivo_publico, {}), ensure_ascii=False, indent=1))
+    elif args.comando == "servir":
+        servir(otimizador)
+    elif args.comando == "aplicar":
+        otimizador.aplicar()
+    elif args.comando == "reverter":
+        otimizador.reverter()
+    elif args.comando == "sugestoes":
+        otimizador.coletar_sugestoes()
+        print(json.dumps(otimizador.sugestoes, ensure_ascii=False, indent=1))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

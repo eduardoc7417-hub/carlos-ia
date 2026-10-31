@@ -1,6 +1,6 @@
 [org/gnome/shell]
-enabled-extensions=['user-theme@gnome-shell-extensions.gcampax.github.com', 'dash-to-dock@micxgx.gmail.com', 'blur-my-shell@aunetx', 'ubuntu-appindicators@ubuntu.com', 'just-perfection-desktop@just-perfection']
-favorite-apps=['org.gnome.Nautilus.desktop', 'firefox-esr.desktop', 'org.gnome.Console.desktop', 'org.gnome.TextEditor.desktop', 'org.gnome.Settings.desktop']
+enabled-extensions=['user-theme@gnome-shell-extensions.gcampax.github.com', 'dash-to-dock@micxgx.gmail.com', 'blur-my-shell@aunetx', 'ubuntu-appindicators@ubuntu.com', 'just-perfection-desktop@just-perfection', 'no-overview@fthx', 'carlos-menu@carlos-os']
+favorite-apps=['org.gnome.Nautilus.desktop', 'firefox-esr.desktop', 'org.gnome.Console.desktop', 'org.gnome.TextEditor.desktop', 'org.carlosos.CarlosAI.desktop', 'org.gnome.Settings.desktop', 'calamares-install-debian.desktop']
 
 [org/gnome/shell/extensions/user-theme]
 name='CarlosUI'
@@ -55,5 +55,6 @@ blur=false
 
 [org/gnome/shell/extensions/just-perfection]
 startup-status=0
+activities-button=false
 clock-menu-position=1
 clock-menu-position-offset=20

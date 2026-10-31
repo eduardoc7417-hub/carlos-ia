@@ -17,7 +17,7 @@ fi
 : > "$LOG"
 # shellcheck disable=SC2086
 qemu-system-x86_64 -machine q35 -accel kvm -accel tcg -cpu max -smp 4 -m 4096 $FW \
-  -vga virtio -cdrom "$ISO" -boot d -display none -serial "file:$LOG" \
+  -vga virtio -device qemu-xhci -device usb-tablet -cdrom "$ISO" -boot d -display none -serial "file:$LOG" \
   -monitor "unix:$SOCK,server,nowait" -no-reboot &
 PID=$!
 
@@ -43,6 +43,15 @@ sleep 30
 echo "sendkey meta_l" | socat - "UNIX-CONNECT:$SOCK" >/dev/null
 sleep 8
 shot 2
+echo "sendkey meta_l" | socat - "UNIX-CONNECT:$SOCK" >/dev/null
+sleep 5
+# Clica no menu Aurora, no canto superior esquerdo (coordenadas de 0 a 32767).
+for c in "mouse_move 500 600" "mouse_button 1" "mouse_button 0"; do
+  echo "$c" | socat - "UNIX-CONNECT:$SOCK" >/dev/null
+  sleep 1
+done
+sleep 4
+shot 3
 kill "$PID" 2>/dev/null
 echo "modo=$MODE login=$RESULT segundos=$ELAPSED log=$LOG"
 grep -nE 'Failed to start|gdm|GNOME Display' "$LOG" | tail -8 | cut -c1-140

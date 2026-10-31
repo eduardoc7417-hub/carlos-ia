@@ -4,7 +4,7 @@
 set -eu
 PROJECT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 WORK=/opt/carlos-build
-NAME=carlos-os-aurora-0.3-carlosui-amd64
+NAME=carlos-os-aurora-0.7-instalavel-amd64
 # Espelho rápido no desenvolvimento; a lista exata de pacotes fica em out/. A ISO final fixa a data no snapshot.
 MIRROR=https://deb.debian.org/debian/
 
@@ -42,6 +42,9 @@ lb config noauto \
 # A pasta do Windows mostra tudo como 777: as permissões da imagem são definidas aqui.
 rsync -a --chmod=D755,F644 "$PROJECT/config/live/" config/
 find config/hooks -type f -exec chmod 755 {} +
+chmod 755 config/includes.chroot/usr/lib/live/config/* config/includes.chroot/usr/share/calamares/helpers/*
+mkdir -p config/packages.chroot
+cp "$PROJECT"/carlos-ai/dist/*.deb config/packages.chroot/
 
 lb build
 

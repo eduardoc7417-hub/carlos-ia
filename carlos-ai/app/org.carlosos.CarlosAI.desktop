@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Carlos AI
+Comment=Assistente local que funciona sem internet
+Exec=carlos-ai
+Icon=carlos-ai
+Terminal=false
+Categories=GTK;Utility;
+Keywords=IA;assistente;conversa;otimizador;
+StartupNotify=true

@@ -4,19 +4,17 @@ Atualizado em 2026-10-31. Estados: planejado, em desenvolvimento, implementado, 
 
 | Componente | Estado | Observação |
 |---|---|---|
-| ISO 0.3 (sid, GNOME 51, CarlosUI) | Testado em parte | Área de trabalho abre em BIOS e UEFI no QEMU (`TESTES.md`) |
-| CarlosUI: dock, barra, vidro, botões à esquerda | Em desenvolvimento | Primeira versão; aplicativos e janelas não testados |
-| Papéis de parede (8 Aurora e 6 Flor) | Implementado | Ajuste das flores feito no script; arte ainda não regenerada nem incluída em ISO |
-| Instalador | Planejado | Não existe |
-| Carlos AI Lite e Pro para Linux e Otimizador | Em desenvolvimento | Na outra conversa, em `carlos-ai/`; não integrados |
-| Protótipo Carlos AI no Windows | Testado em parte | Só a Lite (`prototipos/carlos-ai/RESULTADOS.md`) |
-| Apps Android, .exe e Pacote Cleo | Planejado | Não testados |
-| Computador real | Planejado | Só QEMU até agora |
+| ISO 0.7 (sid, GNOME 51, CarlosUI) | Testado em VM | Live e instalação em UEFI no QEMU (`TESTES.md`) |
+| Instalador (Calamares) | Testado em VM | Instalação em UEFI; BIOS não testado. Precisa de internet para instalar o GRUB |
+| CarlosUI: dock, barra, vidro, Menu Aurora | Em desenvolvimento | Sem ícones próprios, perfis de vidro nem ampliação do dock |
+| Papéis de parede (8 Aurora e 6 Flor) | Implementado | Na ISO; seleção nas Configurações não testada |
+| Carlos AI | Em desenvolvimento | Janela abre no sistema instalado; conversa com modelo não testada nele |
+| Otimizador Carlos | Em desenvolvimento | Serviço ativo no sistema instalado; ajustes reais não avaliados |
+| Apps Android, .exe, Pacote Cleo, VS Code | Planejado | Não testados |
+| Computador real | Planejado | Só QEMU até agora; rede, áudio e fluidez sem teste |
 
-## Onde parei
+## Defeitos conhecidos
 
-1. Rodar `python3 -I tools/gen-art.py` no Debian para aplicar o ajuste das flores e conferir a prévia.
-2. Investigar pelo console serial, com `tools/debug-iso.sh`: relógio em UTC e abertura na visão geral.
-3. Colocar o menu Aurora na barra superior.
-4. Integrar a Carlos AI e o Otimizador quando a outra conversa terminar.
-5. Integrar o instalador e testar a instalação em disco virtual.
+- A imagem de apresentação do instalador aparece em branco durante a instalação.
+- A base sid muda com frequência: a ISO final precisa fixar a data do repositório.
+- A distribuição pública da ISO exige oferecer o código-fonte dos pacotes GPL; isso ainda não foi resolvido.

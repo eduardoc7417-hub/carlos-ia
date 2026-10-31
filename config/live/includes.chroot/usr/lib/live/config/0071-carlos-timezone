@@ -1,0 +1,4 @@
+#!/bin/sh
+# Fuso padrão da sessão live. Roda depois do 0070-tzdata, que volta para UTC.
+echo "America/Sao_Paulo" > /etc/timezone
+ln -sf /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime

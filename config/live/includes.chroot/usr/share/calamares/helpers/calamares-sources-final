@@ -1,0 +1,7 @@
+#!/bin/sh
+# Repositórios do sistema instalado: o Carlos OS Aurora usa o Debian sid, não a edição estável.
+CHROOT=$(mount | grep proc | grep calamares | awk '{print $3}' | sed -e "s#/proc##g")
+cat << EOF > $CHROOT/etc/apt/sources.list
+deb http://deb.debian.org/debian sid main non-free-firmware
+EOF
+exit 0

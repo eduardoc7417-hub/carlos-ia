@@ -1,0 +1,32 @@
+[Unit]
+Description=Otimizador Carlos (ajustes seguros e reversíveis, sem modelo de IA)
+Documentation=file:/usr/share/doc/carlos-otimizador/README.md
+ConditionVirtualization=!container
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/carlos-otimizador servir
+ExecStopPost=/usr/bin/carlos-otimizador reverter
+Restart=on-failure
+RestartSec=30
+StateDirectory=carlos-otimizador
+RuntimeDirectory=carlos-otimizador
+RuntimeDirectoryMode=0755
+ConfigurationDirectory=carlos-otimizador
+Nice=10
+CPUWeight=20
+IOWeight=20
+MemoryMax=64M
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateNetwork=yes
+ProtectHome=yes
+ProtectSystem=full
+RestrictAddressFamilies=AF_UNIX
+RestrictSUIDSGID=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+CapabilityBoundingSet=CAP_SYS_ADMIN CAP_SYS_RESOURCE CAP_DAC_OVERRIDE
+
+[Install]
+WantedBy=multi-user.target

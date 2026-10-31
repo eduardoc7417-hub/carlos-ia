@@ -13,6 +13,8 @@ Uma fase por vez; cada uma só termina com teste real (`TESTES.md`).
 6. **Compatibilidade de apps (opcional):** Android com Waydroid e programas .exe com Wine.
    **Pacote Cleo (nome a confirmar):** escritório e editor de vídeo com nome próprio, sobre projetos livres
    como LibreOffice e Shotcut ou Kdenlive, respeitando licenças e marcas. Não testado.
+   **Programação:** VS Code como instalação opcional pelo repositório oficial da Microsoft, sem incluir na ISO.
+   O Visual Studio completo só existe para Windows; só tentar pelo Wine, sem garantia. Não testado.
 7. **Otimização:** medições no i5-4570 real e em outros computadores.
 8. **Carlos AI Pro:** modelos maiores e aceleração por GPU.
 9. **Lançamento:** licenças, atualizações, revisão jurídica e identidade final.

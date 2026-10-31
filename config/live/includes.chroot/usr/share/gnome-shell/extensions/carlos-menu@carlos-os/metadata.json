@@ -1,0 +1,6 @@
+{
+  "uuid": "carlos-menu@carlos-os",
+  "name": "Menu Aurora",
+  "description": "Menu do sistema do Carlos OS Aurora na barra superior.",
+  "shell-version": ["51"]
+}

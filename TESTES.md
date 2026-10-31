@@ -2,6 +2,20 @@
 
 Só entra aqui o que foi executado de verdade.
 
+## 2026-10-31: ISO 0.7, instalação em disco virtual
+
+- SHA-256: `bf425b7ec91f24eea30d8d01458f2c97cb15f4843c092176f3cb9d8e15a91c43`
+- Ambiente: QEMU com KVM, UEFI, 4 vCPU, 4 GB, disco virtual de 40 GB, com internet. Ferramenta: `tools/vm.sh`.
+- Calamares concluiu a instalação ("Tudo pronto") após corrigir a falta de `dosfstools` e `squashfs-tools`.
+- Sem a ISO, o sistema iniciou no login Aurora, aceitou a senha da conta de teste e abriu a área de trabalho.
+- `carlos-otimizador` ativo (27,6 MB). `live-boot` removido. A janela da Carlos AI abriu.
+
+Não coberto: conversa com modelo no sistema instalado, ajustes do Otimizador, instalação em BIOS ou sem internet,
+Firefox e demais aplicativos, troca de papel de parede, rede real, áudio e computador real.
+
+Na mesma VM, com a ISO 0.5: o Menu Aurora abriu ao clicar. Com a 0.6: a sessão abriu direto na área de trabalho,
+com horário de Brasília.
+
 ## 2026-10-31: ISO 0.3 com CarlosUI
 
 - SHA-256: `275d8ca2d10e8d0d5bef5ca264746337033910f5cec19866c92a9e78f73e5f34`

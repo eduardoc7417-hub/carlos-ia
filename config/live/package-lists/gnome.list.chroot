@@ -24,3 +24,10 @@ gnome-shell-extension-dashtodock
 gnome-shell-extension-blur-my-shell
 gnome-shell-extension-appindicator
 gnome-shell-extension-just-perfection
+gnome-shell-extension-no-overview
+calamares
+calamares-settings-debian
+dosfstools
+squashfs-tools
+efibootmgr
+mtools

@@ -6,3 +6,31 @@ sed -i "s|^logo=.*|logo='/usr/share/pixmaps/carlos-logo-text.png'|" /etc/gdm3/gr
 # O banco da tela de login é gerado pelo gdm3 a partir desse arquivo, em /usr/share/gdm/generate-config.
 dconf update
 gtk-update-icon-cache -q -f /usr/share/icons/hicolor 2>/dev/null || true
+
+# Marca do instalador. O nome interno da pasta "debian" não aparece para o usuário.
+B=/etc/calamares/branding/debian
+sed -i \
+  -e 's|^\( *productName: *\).*|\1Carlos OS Aurora|' \
+  -e 's|^\( *shortProductName: *\).*|\1Carlos OS Aurora|' \
+  -e 's|^\( *version: *\).*|\10.7|' \
+  -e 's|^\( *shortVersion: *\).*|\10.7|' \
+  -e 's|^\( *versionedName: *\).*|\1Carlos OS Aurora 0.7|' \
+  -e 's|^\( *shortVersionedName: *\).*|\1Carlos OS Aurora 0.7|' \
+  -e 's|^\( *bootloaderEntryName: *\).*|\1Carlos OS Aurora|' \
+  -e '/^ *\(productUrl\|supportUrl\|knownIssuesUrl\|releaseNotesUrl\|donateUrl\):/d' \
+  -e 's|^\( *SidebarBackground: *\).*|\1"#0d1b3a"|' \
+  -e 's|^\( *SidebarBackgroundCurrent: *\).*|\1"#1c3f8a"|' \
+  "$B/branding.desc"
+sed -i -e 's|^\( *show\(SupportUrl\|KnownIssuesUrl\|ReleaseNotesUrl\): *\).*|\1false|' /etc/calamares/modules/welcome.conf
+cp /usr/share/pixmaps/carlos-logo.png "$B/debian-logo.png"
+cp /usr/share/pixmaps/carlos-logo.png "$B/welcome.png"
+sed -i \
+  -e 's|source: "slide1.png"|source: "file:///usr/share/backgrounds/carlos/flor-azul.jpg"|' \
+  -e '/text: qsTr("Welcome/,/)/c\            text: qsTr("Bem-vindo ao Carlos OS Aurora.<br/>Seu sistema está sendo instalado.")' \
+  "$B/show.qml"
+sed -i \
+  -e '/^\(Name\|GenericName\|Comment\)\[/d' \
+  -e 's|^Name=.*|Name=Instalar o Carlos OS Aurora|' \
+  -e 's|^GenericName=.*|GenericName=Instalador|' \
+  -e 's|^Icon=.*|Icon=carlos-logo|' \
+  /usr/share/applications/calamares-install-debian.desktop
