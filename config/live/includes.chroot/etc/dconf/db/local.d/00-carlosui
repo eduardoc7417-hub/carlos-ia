@@ -1,0 +1,59 @@
+[org/gnome/shell]
+enabled-extensions=['user-theme@gnome-shell-extensions.gcampax.github.com', 'dash-to-dock@micxgx.gmail.com', 'blur-my-shell@aunetx', 'ubuntu-appindicators@ubuntu.com', 'just-perfection-desktop@just-perfection']
+favorite-apps=['org.gnome.Nautilus.desktop', 'firefox-esr.desktop', 'org.gnome.Console.desktop', 'org.gnome.TextEditor.desktop', 'org.gnome.Settings.desktop']
+
+[org/gnome/shell/extensions/user-theme]
+name='CarlosUI'
+
+[org/gnome/desktop/wm/preferences]
+button-layout='close,minimize,maximize:'
+
+[org/gnome/desktop/interface]
+color-scheme='prefer-dark'
+accent-color='blue'
+enable-hot-corners=false
+clock-show-weekday=true
+font-name='Inter 10.5'
+document-font-name='Inter 10.5'
+monospace-font-name='JetBrains Mono 10'
+
+[org/gnome/desktop/background]
+picture-uri='file:///usr/share/backgrounds/carlos/alvorecer.jpg'
+picture-uri-dark='file:///usr/share/backgrounds/carlos/aurora-noite.jpg'
+picture-options='zoom'
+
+[org/gnome/desktop/screensaver]
+picture-uri='file:///usr/share/backgrounds/carlos/aurora-noite.jpg'
+
+[org/gnome/shell/extensions/dash-to-dock]
+dock-position='BOTTOM'
+extend-height=false
+dock-fixed=false
+intellihide=true
+intellihide-mode='FOCUS_APPLICATION_WINDOWS'
+dash-max-icon-size=48
+apply-custom-theme=false
+custom-theme-shrink=true
+transparency-mode='FIXED'
+background-opacity=0.35
+running-indicator-style='DOTS'
+show-trash=true
+show-mounts=false
+click-action='minimize-or-previews'
+
+[org/gnome/shell/extensions/blur-my-shell/panel]
+blur=true
+static-blur=true
+
+[org/gnome/shell/extensions/blur-my-shell/dash-to-dock]
+blur=true
+static-blur=true
+override-background=true
+
+[org/gnome/shell/extensions/blur-my-shell/applications]
+blur=false
+
+[org/gnome/shell/extensions/just-perfection]
+startup-status=0
+clock-menu-position=1
+clock-menu-position-offset=20

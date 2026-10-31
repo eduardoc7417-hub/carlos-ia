@@ -1,0 +1,8 @@
+#!/bin/sh
+# Aplica a CarlosUI: banco dconf do sistema, logo do login e ícones.
+set -e
+
+sed -i "s|^logo=.*|logo='/usr/share/pixmaps/carlos-logo-text.png'|" /etc/gdm3/greeter.dconf-defaults
+# O banco da tela de login é gerado pelo gdm3 a partir desse arquivo, em /usr/share/gdm/generate-config.
+dconf update
+gtk-update-icon-cache -q -f /usr/share/icons/hicolor 2>/dev/null || true

@@ -11,7 +11,7 @@ Responder em português do Brasil, de forma curta. Não declarar nada como testa
 
 ## Decisões
 
-- Base: Debian sid com data fixa do repositório e live-build, por pedido do usuário de ter o GNOME mais recente. Substitui Debian 13 (`docs/decisao-base.md`), Ubuntu e Linux From Scratch.
+- Base: Debian sid e live-build (espelho normal no desenvolvimento, data fixa no snapshot só na ISO final), por pedido do usuário de ter o GNOME mais recente. Substitui Debian 13 (`docs/decisao-base.md`), Ubuntu e Linux From Scratch.
 - Interface: GNOME 51; a pesquisa foi feita para o GNOME 50, então conferir cada extensão no 51.
 - Construção: WSL2 Debian; o QEMU usa KVM quando disponível, mas serve para boot e instalação, não para medir fluidez.
 - Situação real em `STATUS.md`, testes em `TESTES.md`, fases em `ROADMAP.md`.

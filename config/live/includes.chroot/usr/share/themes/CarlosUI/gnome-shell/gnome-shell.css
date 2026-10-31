@@ -1,0 +1,36 @@
+/* CarlosUI: Vidro Aurora sobre o tema padrão do GNOME Shell. */
+@import url("resource:///org/gnome/shell/theme/gnome-shell-dark.css");
+
+#panel {
+  background-color: rgba(14, 18, 32, 0.32);
+  height: 30px;
+  font-weight: 500;
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.10);
+}
+
+#panel .panel-button {
+  border-radius: 8px;
+}
+
+.popup-menu-content,
+.quick-settings {
+  background-color: rgba(26, 30, 46, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 18px;
+}
+
+.message-list,
+.datemenu-calendar-column .calendar,
+.notification-banner {
+  border-radius: 16px;
+}
+
+#dash .dash-background {
+  background-color: rgba(26, 30, 46, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 22px;
+}
+
+.search-entry {
+  border-radius: 14px;
+}
