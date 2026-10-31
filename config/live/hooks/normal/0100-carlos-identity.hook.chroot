@@ -1,0 +1,19 @@
+#!/bin/sh
+# Identidade do sistema. dpkg-divert impede que atualizações do base-files restaurem os originais.
+set -e
+
+for f in /usr/lib/os-release /etc/issue /etc/issue.net; do
+  dpkg-divert --local --rename --add "$f"
+done
+
+cat > /usr/lib/os-release <<'EOF'
+PRETTY_NAME="Carlos OS Aurora 0.1"
+NAME="Carlos OS Aurora"
+VERSION_ID="0.1"
+VERSION="0.1"
+ID=carlos-os
+ID_LIKE=debian
+EOF
+
+printf 'Carlos OS Aurora 0.1 \\n \\l\n\n' > /etc/issue
+printf 'Carlos OS Aurora 0.1\n' > /etc/issue.net

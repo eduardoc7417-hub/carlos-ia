@@ -1,0 +1,9 @@
+Continue o projeto Carlos OS Aurora. Os arquivos estão em C:\Users\carlos\Downloads\Carlos-OS-Aurora.
+
+1. Mova a sessão para essa pasta e leia só o CLAUDE.md e o RESTAURAR.md. Não refaça as pesquisas.
+2. Verifique de verdade o que existe neste Windows: a pasta, o WSL, o Debian e as ferramentas. Se faltar algo que exija administrador, me passe o comando exato.
+3. Instale o que faltar com tools/setup-host.sh e confira o hash da ISO mínima.
+4. Teste o boot da ISO mínima no QEMU, em BIOS e UEFI, e me diga o resultado real.
+5. Se passar, adicione o GNOME, a identidade Carlos OS Aurora e a CarlosUI por etapas, conferindo cada extensão no GNOME 48. Se falhar, corrija antes de avançar.
+
+Regras: responda em português do Brasil e de forma curta, gaste poucos créditos, não invente resultados e não formate nenhum disco sem minha autorização. O pendrive CARLOS_OS_A guarda o trabalho anterior: não grave nele.
