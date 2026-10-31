@@ -10,7 +10,9 @@ Só entra aqui o que foi executado de verdade.
 - Sem a ISO, o sistema iniciou no login Aurora, aceitou a senha da conta de teste e abriu a área de trabalho.
 - `carlos-otimizador` ativo (27,6 MB). `live-boot` removido. A janela da Carlos AI abriu.
 
-Não coberto: conversa com modelo no sistema instalado, ajustes do Otimizador, instalação em BIOS ou sem internet,
+- Carlos AI Lite: pedido de consentimento exibido, Gemma 3 1B baixado e uma pergunta respondida em português, em até 50 s.
+
+Não coberto: qualidade e velocidade da Carlos AI, Carlos AI Pro, ajustes do Otimizador, instalação em BIOS ou sem internet,
 Firefox e demais aplicativos, troca de papel de parede, rede real, áudio e computador real.
 
 Na mesma VM, com a ISO 0.5: o Menu Aurora abriu ao clicar. Com a 0.6: a sessão abriu direto na área de trabalho,
