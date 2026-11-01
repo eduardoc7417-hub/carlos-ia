@@ -15,6 +15,19 @@ A situação real de cada parte está em [STATUS.md](STATUS.md), e os testes exe
 - Dock, barra e menus translúcidos, Menu Aurora e botões de janela à esquerda
 - 14 papéis de parede próprios, gerados por `tools/gen-art.py`
 
+- Carlos AI Lite respondendo em português
+- Bloco de Notas de 64 bits pelo Wine e Android até a tela inicial, em testes na VM
+
+## Fotos
+
+Capturas reais em máquina virtual, sem aceleração gráfica.
+
+| | |
+|---|---|
+| ![Menu Aurora](docs/imagens/menu-aurora.png) Menu Aurora | ![Carlos AI](docs/imagens/carlos-ai.png) Carlos AI Lite |
+| ![Android](docs/imagens/android.png) Android (Waydroid) | ![Wine](docs/imagens/wine.png) Programa Windows pelo Wine |
+| ![Instalador](docs/imagens/instalador.png) Instalador | ![Papéis de parede](docs/imagens/papeis-de-parede.jpg) Papéis de parede |
+
 ## O que falta
 
 Veja o [ROADMAP.md](ROADMAP.md). Prioridades: teste em computadores reais, ícones próprios, perfis de vidro
