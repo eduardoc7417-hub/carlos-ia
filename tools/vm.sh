@@ -64,6 +64,7 @@ case "$1" in
         -) k=minus ;;
         .) k=dot ;;
         ,) k=comma ;;
+        :) k=shift-slash ;;
         _) k=shift-minus ;;
         '>') k=shift-dot ;;
         /) k=ro ;;

@@ -1,5 +1,21 @@
 # Roteiro
 
+## Versão 0.9: a mais completa até aqui
+
+Objetivo pedido pelo usuário: mudar a arquitetura onde for preciso e melhorar tudo. Nada disto foi feito ainda.
+
+1. **Segurança e arquitetura:** Btrfs com pontos de restauração antes de atualizar, atualizações testadas e repositório com data fixa.
+2. **Desempenho:** compressão de memória (zram), perfis de vidro, ajustes do Otimizador e medições no i5-4570 real.
+3. **Instalador:** funcionar sem internet, BIOS e UEFI, dual boot testado em VM e apresentação corrigida.
+4. **Visual:** tela de boot Aurora, tema de janelas, ícones próprios e ampliação do dock.
+5. **Compatibilidade:** `.exe` com dois cliques, Android com instalação de apps e loja de aplicativos.
+6. **Carlos AI:** Pro testada e melhores respostas em português.
+7. **Lançamento:** pacote de código-fonte, para publicar a ISO em dia com a licença.
+
+Ordem pedida pelo usuário: terminar a 0.8 e fazer a 0.9 em Debian. O Carlos OS Puro em LFS (`docs/carlos-os-puro.md`) fica para depois, só com as ferramentas preparadas.
+
+## Fases
+
 Uma fase por vez; cada uma só termina com teste real (`TESTES.md`).
 
 1. **Sistema mínimo:** boot em BIOS e UEFI no QEMU. Concluído na ISO 0.1.1.

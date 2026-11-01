@@ -15,6 +15,21 @@ Atualizado em 2026-10-31. Estados: planejado, em desenvolvimento, implementado, 
 | Pacote Cleo, VS Code | Planejado | Não testados |
 | Computador real | Planejado | Só QEMU até agora; rede, áudio e fluidez sem teste |
 
+## Onde parei (2026-10-31, 21:40)
+
+ISO 0.8 gerada em `out/` (SHA-256 `8f87caa1da8fd223271d5e17a277142e943311b3e23ff8aaed16961e8d4ca645`).
+Instalou em disco virtual (`/opt/vm/disco.qcow2`) e reiniciou sem a ISO.
+
+Falta, nesta ordem:
+
+1. Abrir o ícone Android de novo no sistema instalado: o download foi interrompido e recomeça.
+2. Testar um `.exe` de 64 bits.
+3. Gravar o vídeo com a Flor Violeta (`ffmpeg` pode faltar no Debian do WSL) e publicar no GitHub.
+4. Entregar o texto do lançamento 0.8, com o pacote de código-fonte exigido pela GPL.
+5. Depois, a versão 0.9 em Debian. O Carlos OS Puro fica para mais tarde (`docs/carlos-os-puro.md`).
+
+Para ligar a VM: `sh tools/vm.sh run nenhuma` como root no Debian do WSL. Com janela: `VM_TELA=gtk` antes do comando.
+
 ## Defeitos conhecidos
 
 - A imagem de apresentação do instalador aparece em branco durante a instalação.
