@@ -22,6 +22,15 @@ A situação real de cada parte está em [STATUS.md](STATUS.md), e os testes exe
 
 Capturas reais em máquina virtual, sem aceleração gráfica.
 
+**Vídeo da versão 0.9:** [carlos-os-aurora-0.9.mp4](docs/video/carlos-os-aurora-0.9.mp4)
+
+| | |
+|---|---|
+| ![Flor Violeta](docs/imagens/0.9-area-de-trabalho.png) Área de trabalho 0.9 | ![Loja](docs/imagens/0.9-loja.png) Loja de aplicativos |
+| ![Android](docs/imagens/0.9-android.png) Android pelo ícone | ![Programa Windows](docs/imagens/0.9-exe.png) `.exe` pelo Wine |
+
+Versões anteriores:
+
 | | |
 |---|---|
 | ![Menu Aurora](docs/imagens/menu-aurora.png) Menu Aurora | ![Carlos AI](docs/imagens/carlos-ai.png) Carlos AI Lite |
