@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Android
+Comment=Apps Android no Carlos OS Aurora
+Exec=carlos-android
+Icon=waydroid
+Terminal=true
+Categories=System;Emulator;

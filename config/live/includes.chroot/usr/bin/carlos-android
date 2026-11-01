@@ -1,0 +1,18 @@
+#!/bin/sh
+# Abre o Android. Na primeira vez, pede consentimento e baixa a imagem do sistema.
+if [ ! -f /var/lib/waydroid/images/system.img ]; then
+  echo "O Android ainda não foi instalado."
+  echo "Serão baixados cerca de 1 GB do projeto Waydroid (LineageOS, sem apps do Google)."
+  printf "Baixar agora? [s/N] "
+  read -r resposta
+  case "$resposta" in
+    s|S) ;;
+    *) exit 0 ;;
+  esac
+  pkexec /usr/bin/carlos-android-setup || {
+    echo "Não foi possível instalar o Android. Pressione Enter para fechar."
+    read -r _
+    exit 1
+  }
+fi
+exec waydroid show-full-ui

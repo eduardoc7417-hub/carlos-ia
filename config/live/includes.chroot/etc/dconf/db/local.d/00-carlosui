@@ -1,6 +1,6 @@
 [org/gnome/shell]
 enabled-extensions=['user-theme@gnome-shell-extensions.gcampax.github.com', 'dash-to-dock@micxgx.gmail.com', 'blur-my-shell@aunetx', 'ubuntu-appindicators@ubuntu.com', 'just-perfection-desktop@just-perfection', 'no-overview@fthx', 'carlos-menu@carlos-os']
-favorite-apps=['org.gnome.Nautilus.desktop', 'firefox-esr.desktop', 'org.gnome.Console.desktop', 'org.gnome.TextEditor.desktop', 'org.carlosos.CarlosAI.desktop', 'org.gnome.Settings.desktop', 'calamares-install-debian.desktop']
+favorite-apps=['org.gnome.Nautilus.desktop', 'firefox-esr.desktop', 'org.gnome.Console.desktop', 'org.gnome.TextEditor.desktop', 'org.carlosos.CarlosAI.desktop', 'org.carlosos.Android.desktop', 'org.gnome.Settings.desktop', 'calamares-install-debian.desktop']
 
 [org/gnome/shell/extensions/user-theme]
 name='CarlosUI'

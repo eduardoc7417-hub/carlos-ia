@@ -30,4 +30,7 @@ calamares-settings-debian
 dosfstools
 squashfs-tools
 efibootmgr
+wine
+wine64
+waydroid
 mtools

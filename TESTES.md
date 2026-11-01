@@ -2,6 +2,15 @@
 
 Só entra aqui o que foi executado de verdade.
 
+## 2026-10-31: Wine e Android no sistema instalado (VM, pacotes instalados à mão)
+
+- Wine 10: o Bloco de Notas de 64 bits abriu. Falta testar um `.exe` baixado.
+- Waydroid 1.6.3 com LineageOS 20: exigiu `binder_linux` com `devices=binder,hwbinder,vndbinder`. Com vídeo por
+  software (`gralloc=default`, `egl=swiftshader`), abriu até a tela inicial. Com os valores padrão, a tela ficou preta na VM.
+- Troca de papel de parede pelo usuário funcionou (Flor Esmeralda). A tela de bloqueio aparece certa.
+
+Não coberto: instalar apps Android, apps só ARM, Play Store, Android com GPU real. A ISO 0.8 ainda não foi testada.
+
 ## 2026-10-31: ISO 0.7, instalação em disco virtual
 
 - SHA-256: `bf425b7ec91f24eea30d8d01458f2c97cb15f4843c092176f3cb9d8e15a91c43`

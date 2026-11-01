@@ -10,7 +10,9 @@ Atualizado em 2026-10-31. Estados: planejado, em desenvolvimento, implementado, 
 | Papéis de parede (8 Aurora e 6 Flor) | Implementado | Na ISO; seleção nas Configurações não testada |
 | Carlos AI | Em desenvolvimento | Lite respondeu uma pergunta no sistema instalado; Pro não testada |
 | Otimizador Carlos | Em desenvolvimento | Serviço ativo no sistema instalado; ajustes reais não avaliados |
-| Apps Android, .exe, Pacote Cleo, VS Code | Planejado | Não testados |
+| Programas .exe (Wine) | Em desenvolvimento | Bloco de Notas de 64 bits abriu na VM; integrado à ISO 0.8, não testada |
+| Apps Android (Waydroid) | Em desenvolvimento | Android abriu na VM; integrado à ISO 0.8, não testada; imagem baixada com consentimento |
+| Pacote Cleo, VS Code | Planejado | Não testados |
 | Computador real | Planejado | Só QEMU até agora; rede, áudio e fluidez sem teste |
 
 ## Defeitos conhecidos

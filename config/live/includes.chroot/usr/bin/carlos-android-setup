@@ -1,0 +1,11 @@
+#!/bin/sh
+# Baixa a imagem do Android. Em vídeo virtual, sem aceleração, usa renderização por software.
+set -e
+waydroid init
+driver=$(basename "$(readlink -f /sys/class/drm/card0/device/driver)" 2>/dev/null || true)
+case "$driver" in
+  virtio*|bochs*|qxl*|vmwgfx*|cirrus*)
+    sed -i -e 's/gralloc=gbm/gralloc=default/' -e 's/egl=mesa/egl=swiftshader/' /var/lib/waydroid/waydroid_base.prop
+    ;;
+esac
+systemctl restart waydroid-container

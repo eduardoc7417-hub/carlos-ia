@@ -29,7 +29,7 @@ case "$1" in
       -drive if=pflash,format=raw,file="$DIR/vars.fd" \
       -drive file="$DISK",if=virtio,format=qcow2 $CD \
       -vga virtio -device qemu-xhci -device usb-tablet -nic user,model=e1000 \
-      -display none -serial "file:$DIR/serial.log" \
+      -display "${VM_TELA:-none}" -serial "file:$DIR/serial.log" \
       -monitor "unix:$MON,server,nowait" -qmp "unix:$QMP,server,nowait"
     ;;
   shot)
@@ -63,6 +63,11 @@ case "$1" in
         ' ') k=spc ;;
         -) k=minus ;;
         .) k=dot ;;
+        ,) k=comma ;;
+        _) k=shift-minus ;;
+        '>') k=shift-dot ;;
+        /) k=ro ;;
+        =) k=equal ;;
         *) continue ;;
       esac
       mon "sendkey $k"

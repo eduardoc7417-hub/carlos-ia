@@ -7,15 +7,18 @@ sed -i "s|^logo=.*|logo='/usr/share/pixmaps/carlos-logo-text.png'|" /etc/gdm3/gr
 dconf update
 gtk-update-icon-cache -q -f /usr/share/icons/hicolor 2>/dev/null || true
 
+# Foto padrão de usuário: o pacote desktop-base traz o logo do Debian.
+cp /usr/share/pixmaps/carlos-logo.png /etc/skel/.face
+
 # Marca do instalador. O nome interno da pasta "debian" não aparece para o usuário.
 B=/etc/calamares/branding/debian
 sed -i \
   -e 's|^\( *productName: *\).*|\1Carlos OS Aurora|' \
   -e 's|^\( *shortProductName: *\).*|\1Carlos OS Aurora|' \
-  -e 's|^\( *version: *\).*|\10.7|' \
-  -e 's|^\( *shortVersion: *\).*|\10.7|' \
-  -e 's|^\( *versionedName: *\).*|\1Carlos OS Aurora 0.7|' \
-  -e 's|^\( *shortVersionedName: *\).*|\1Carlos OS Aurora 0.7|' \
+  -e 's|^\( *version: *\).*|\10.8|' \
+  -e 's|^\( *shortVersion: *\).*|\10.8|' \
+  -e 's|^\( *versionedName: *\).*|\1Carlos OS Aurora 0.8|' \
+  -e 's|^\( *shortVersionedName: *\).*|\1Carlos OS Aurora 0.8|' \
   -e 's|^\( *bootloaderEntryName: *\).*|\1Carlos OS Aurora|' \
   -e '/^ *\(productUrl\|supportUrl\|knownIssuesUrl\|releaseNotesUrl\|donateUrl\):/d' \
   -e 's|^\( *SidebarBackground: *\).*|\1"#0d1b3a"|' \
