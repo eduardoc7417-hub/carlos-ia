@@ -7,14 +7,14 @@ for f in /usr/lib/os-release /etc/issue /etc/issue.net; do
 done
 
 cat > /usr/lib/os-release <<'EOF'
-PRETTY_NAME="Carlos OS Aurora 0.8"
+PRETTY_NAME="Carlos OS Aurora 0.9"
 NAME="Carlos OS Aurora"
-VERSION_ID="0.8"
-VERSION="0.8"
+VERSION_ID="0.9"
+VERSION="0.9"
 ID=carlos-os
 ID_LIKE=debian
 LOGO=carlos-logo
 EOF
 
-printf 'Carlos OS Aurora 0.8 \\n \\l\n\n' > /etc/issue
-printf 'Carlos OS Aurora 0.8\n' > /etc/issue.net
+printf 'Carlos OS Aurora 0.9 \\n \\l\n\n' > /etc/issue
+printf 'Carlos OS Aurora 0.9\n' > /etc/issue.net

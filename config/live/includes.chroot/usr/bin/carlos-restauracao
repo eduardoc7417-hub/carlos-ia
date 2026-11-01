@@ -1,0 +1,16 @@
+#!/bin/sh
+# Cria um ponto de restauração antes de instalar ou atualizar pacotes, no máximo um por dia.
+# Nunca bloqueia o apt: se falhar, a atualização segue, e o erro fica no diário do sistema.
+[ "$(findmnt -no FSTYPE /)" = btrfs ] || exit 0
+systemd-detect-virt --quiet --chroot && exit 0
+[ -d /run/live ] && exit 0
+marca=/var/lib/carlos/restauracao-$(date +%F)
+[ -e "$marca" ] && exit 0
+mkdir -p /var/lib/carlos
+if timeshift --create --scripted --btrfs --tags D --comments "Antes de atualizar" >/dev/null 2>&1; then
+  rm -f /var/lib/carlos/restauracao-*
+  touch "$marca"
+else
+  logger -t carlos-restauracao "Não foi possível criar o ponto de restauração"
+fi
+exit 0

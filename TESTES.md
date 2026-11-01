@@ -2,6 +2,19 @@
 
 Só entra aqui o que foi executado de verdade.
 
+## 2026-11-01: ISO 0.9, instalação em Btrfs
+
+- SHA-256: `fe557381111e039ce8c2c7f7f0973052add3284c8ce49a02c1b6e66792a93366`
+- Ambiente: QEMU com KVM, UEFI, 4 vCPU, 4 GB, disco virtual de 40 GB, com internet.
+- Calamares instalou em Btrfs, com os subvolumes `@` e `@home`, e o sistema reiniciou sem a ISO até a área de trabalho.
+- `zramswap` ativo (`/dev/zram0`, 1,9 GB) e `carlos-otimizador` ativo.
+- `carlos-restauracao` criou um ponto de restauração, listado pelo Timeshift.
+
+Falhou: a tela de boot Aurora. `plymouth-start.service` caiu com SIGSEGV e mostrou texto de erro no boot; causa não confirmada.
+
+Não coberto: restaurar um ponto, criação automática pelo apt, loja de aplicativos, `.exe` com dois cliques,
+Android nesta versão, BIOS, computador real.
+
 ## 2026-10-31: Wine e Android no sistema instalado (VM, pacotes instalados à mão)
 
 - Wine 10: o Bloco de Notas de 64 bits abriu. Falta testar um `.exe` baixado.

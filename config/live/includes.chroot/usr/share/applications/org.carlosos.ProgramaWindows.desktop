@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Programa do Windows
+Comment=Abre programas .exe pelo Wine
+Exec=wine start /unix %f
+Icon=application-x-executable
+Terminal=false
+NoDisplay=true
+MimeType=application/x-ms-dos-executable;application/vnd.microsoft.portable-executable;application/x-msdownload;

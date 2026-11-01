@@ -7,6 +7,16 @@ sed -i "s|^logo=.*|logo='/usr/share/pixmaps/carlos-logo-text.png'|" /etc/gdm3/gr
 dconf update
 gtk-update-icon-cache -q -f /usr/share/icons/hicolor 2>/dev/null || true
 
+# Instalação em Btrfs, com os subvolumes @ e @home que o Timeshift usa para os pontos de restauração.
+sed -i 's|^defaultFileSystemType:.*|defaultFileSystemType:  "btrfs"|' /etc/calamares/modules/partition.conf
+cat >> /etc/calamares/modules/mount.conf <<'EOF'
+btrfsSubvolumes:
+    - mountPoint: /
+      subvolume: /@
+    - mountPoint: /home
+      subvolume: /@home
+EOF
+
 # Foto padrão de usuário: o pacote desktop-base traz o logo do Debian.
 cp /usr/share/pixmaps/carlos-logo.png /etc/skel/.face
 
@@ -15,10 +25,10 @@ B=/etc/calamares/branding/debian
 sed -i \
   -e 's|^\( *productName: *\).*|\1Carlos OS Aurora|' \
   -e 's|^\( *shortProductName: *\).*|\1Carlos OS Aurora|' \
-  -e 's|^\( *version: *\).*|\10.8|' \
-  -e 's|^\( *shortVersion: *\).*|\10.8|' \
-  -e 's|^\( *versionedName: *\).*|\1Carlos OS Aurora 0.8|' \
-  -e 's|^\( *shortVersionedName: *\).*|\1Carlos OS Aurora 0.8|' \
+  -e 's|^\( *version: *\).*|\10.9|' \
+  -e 's|^\( *shortVersion: *\).*|\10.9|' \
+  -e 's|^\( *versionedName: *\).*|\1Carlos OS Aurora 0.9|' \
+  -e 's|^\( *shortVersionedName: *\).*|\1Carlos OS Aurora 0.9|' \
   -e 's|^\( *bootloaderEntryName: *\).*|\1Carlos OS Aurora|' \
   -e '/^ *\(productUrl\|supportUrl\|knownIssuesUrl\|releaseNotesUrl\|donateUrl\):/d' \
   -e 's|^\( *SidebarBackground: *\).*|\1"#0d1b3a"|' \

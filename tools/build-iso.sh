@@ -4,7 +4,7 @@
 set -eu
 PROJECT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 WORK=/opt/carlos-build
-NAME=carlos-os-aurora-0.8-instalavel-amd64
+NAME=carlos-os-aurora-0.9-instalavel-amd64
 # Espelho rápido no desenvolvimento; a lista exata de pacotes fica em out/. A ISO final fixa a data no snapshot.
 MIRROR=https://deb.debian.org/debian/
 
@@ -27,6 +27,7 @@ lb config noauto \
   --parent-mirror-bootstrap "$MIRROR" \
   --parent-mirror-chroot "$MIRROR" \
   --parent-mirror-binary "$MIRROR" \
+  --apt-options "--yes -o Acquire::ForceIPv4=true -o Acquire::Retries=5" \
   --binary-images iso-hybrid \
   --bootloaders "grub-efi,syslinux" \
   --debian-installer none \
@@ -37,7 +38,7 @@ lb config noauto \
   --iso-application "Carlos OS Aurora" \
   --iso-publisher "Carlos OS Aurora" \
   --iso-volume "CARLOS_OS_AURORA" \
-  --bootappend-live "boot=live components hostname=carlos-os username=carlos locales=pt_BR.UTF-8 keyboard-layouts=br timezone=America/Sao_Paulo console=tty0 console=ttyS0,115200n8"
+  --bootappend-live "boot=live components hostname=carlos-os username=carlos locales=pt_BR.UTF-8 keyboard-layouts=br timezone=America/Sao_Paulo quiet splash console=ttyS0,115200n8 console=tty0"
 
 # A pasta do Windows mostra tudo como 777: as permissões da imagem são definidas aqui.
 rsync -a --chmod=D755,F644 "$PROJECT/config/live/" config/

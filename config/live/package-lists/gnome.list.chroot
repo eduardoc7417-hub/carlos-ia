@@ -33,4 +33,12 @@ efibootmgr
 wine
 wine64
 waydroid
+plymouth
+zram-tools
+btrfs-progs
+timeshift
+flatpak
+gnome-software
+gnome-software-plugin-flatpak
+desktop-file-utils
 mtools

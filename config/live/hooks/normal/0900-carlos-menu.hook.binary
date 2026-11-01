@@ -1,0 +1,6 @@
+#!/bin/sh
+# Nome certo no menu de boot da ISO.
+for f in isolinux/live.cfg boot/grub/grub.cfg; do
+  [ -f "$f" ] && sed -i -e 's/Live system/Carlos OS Aurora/g' -e 's/fail-safe mode/modo de segurança/g' "$f"
+done
+exit 0

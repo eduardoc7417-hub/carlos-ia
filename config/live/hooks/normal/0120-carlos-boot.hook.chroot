@@ -1,0 +1,13 @@
+#!/bin/sh
+# Tela de boot Aurora, compressão de memória, loja de aplicativos e programas Windows com dois cliques.
+set -e
+
+cp /usr/share/pixmaps/carlos-logo.png /usr/share/plymouth/themes/aurora/logo.png
+plymouth-set-default-theme aurora
+
+printf 'ALGO=zstd\nPERCENT=50\n' > /etc/default/zramswap
+
+flatpak remote-add --system --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo || true
+
+update-desktop-database /usr/share/applications
+update-initramfs -u -k all
