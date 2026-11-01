@@ -1,8 +1,24 @@
 [Plymouth Theme]
 Name=Aurora
 Description=Tela de boot do Carlos OS Aurora
-ModuleName=script
+ModuleName=two-step
 
-[script]
+[two-step]
+Font=Inter 12
+TitleFont=Inter Light 24
 ImageDir=/usr/share/plymouth/themes/aurora
-ScriptFile=/usr/share/plymouth/themes/aurora/aurora.script
+DialogHorizontalAlignment=.5
+DialogVerticalAlignment=.75
+TitleHorizontalAlignment=.5
+TitleVerticalAlignment=.75
+HorizontalAlignment=.5
+VerticalAlignment=.8
+WatermarkHorizontalAlignment=.5
+WatermarkVerticalAlignment=.45
+Transition=none
+TransitionDuration=0.0
+BackgroundStartColor=0x050816
+BackgroundEndColor=0x0d1b3a
+ProgressBarBackgroundColor=0x1c2a4a
+ProgressBarForegroundColor=0x5fd0ff
+MessageBelowAnimation=true

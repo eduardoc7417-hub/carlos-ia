@@ -10,9 +10,17 @@ Só entra aqui o que foi executado de verdade.
 - `zramswap` ativo (`/dev/zram0`, 1,9 GB) e `carlos-otimizador` ativo.
 - `carlos-restauracao` criou um ponto de restauração, listado pelo Timeshift.
 
-Falhou: a tela de boot Aurora. `plymouth-start.service` caiu com SIGSEGV e mostrou texto de erro no boot; causa não confirmada.
+Falhou: a tela de boot Aurora. `plymouth-start.service` caiu com SIGSEGV e mostrou texto de erro no boot. Sem a animação,
+o erro se repetiu (ISO `f33136b2...`), no plugin `script` (`script_lib_sprite_refresh`, `ply_console_viewer_hide`).
+Com o tema `two-step` (ISO `dcfb6f10...`), o erro sumiu: sem SEGV e sem texto técnico no boot. O logo Aurora não apareceu na VM:
+só fundo cinza e três pontos, apesar de tema e plugin estarem no initramfs. Causa não confirmada; falta testar em computador real.
 
-Não coberto: restaurar um ponto, criação automática pelo apt, loja de aplicativos, `.exe` com dois cliques,
+Restauração (ISO `dcfb6f10...`): com `timeshift --restore` e reinício, um arquivo criado em `/etc` depois do ponto sumiu,
+`/home` foi mantido e os serviços voltaram. O comando faz perguntas no terminal.
+
+`.exe`: `gio open teste.exe` (mesma associação do duplo clique) abriu o Bloco de Notas de 64 bits pelo Wine.
+
+Não coberto: duplo clique com o mouse no gerenciador de arquivos, criação automática do ponto pelo apt, loja de aplicativos,
 Android nesta versão, BIOS, computador real.
 
 ## 2026-10-31: Wine e Android no sistema instalado (VM, pacotes instalados à mão)

@@ -2,7 +2,8 @@
 # Tela de boot Aurora, compressão de memória, loja de aplicativos e programas Windows com dois cliques.
 set -e
 
-cp /usr/share/pixmaps/carlos-logo.png /usr/share/plymouth/themes/aurora/logo.png
+cp /usr/share/pixmaps/carlos-logo.png /usr/share/plymouth/themes/aurora/watermark.png
+rm -f /usr/share/plymouth/themes/aurora/aurora.script
 plymouth-set-default-theme aurora
 
 printf 'ALGO=zstd\nPERCENT=50\n' > /etc/default/zramswap

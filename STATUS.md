@@ -30,6 +30,11 @@ Falta, nesta ordem:
 
 Para ligar a VM: `sh tools/vm.sh run nenhuma` como root no Debian do WSL. Com janela: `VM_TELA=gtk` antes do comando.
 
+## Atualização (2026-11-01)
+
+ISO 0.9 gerada (SHA-256 `dcfb6f10ad5efe5f2a45ec7eae1286dda96086e93a6273a4c1820eae625b72b7`), com Btrfs, restauração, zram, loja e Wine.
+Resultados em `TESTES.md`. Faltam: instalar app pela loja, vídeo, dual boot em VM, logo na tela de boot e pacote de código-fonte.
+
 ## Defeitos conhecidos
 
 - A imagem de apresentação do instalador aparece em branco durante a instalação.
