@@ -150,6 +150,10 @@ def carregar_config():
             config[chave] = valor
     if config["versao"] not in PERFIS:
         config["versao"] = "lite"
+    # Um modelo que saiu do catálogo numa versão nova volta ao padrão em vez de derrubar o app.
+    for versao, modelo_id in config["modelos"].items():
+        if modelo_id not in CATALOGO:
+            config["modelos"][versao] = CONFIG_PADRAO["modelos"].get(versao, PERFIS["lite"]["modelo"])
     return config
 
 
@@ -367,12 +371,15 @@ class Servidor:
             lancado = resposta.get()
         if isinstance(lancado, OSError):
             raise ErroCarlos(f"Não foi possível iniciar o llama-server: {lancado}")
-        self.processo = lancado
+        self.processo = processo = lancado
         self.chave = chave
         limite = time.monotonic() + tempo_limite
         while time.monotonic() < limite:
-            if self.processo.poll() is not None:
-                codigo = self.processo.returncode
+            # parar() pode ser chamado pela janela enquanto o modelo carrega.
+            if self.processo is not processo:
+                raise ErroCarlos("O carregamento do modelo foi interrompido.")
+            if processo.poll() is not None:
+                codigo = processo.returncode
                 self.processo = None
                 raise ErroCarlos(f"O llama-server encerrou ao carregar o modelo (código {codigo}). Veja {registro}.")
             if self._saudavel():

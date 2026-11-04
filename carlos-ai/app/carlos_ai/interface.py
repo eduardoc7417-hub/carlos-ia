@@ -324,7 +324,11 @@ class Janela(Adw.ApplicationWindow):
         privacidade = Adw.PreferencesGroup(title="Privacidade",
                                            description="Sem telemetria. O histórico fica só neste computador.")
         historico = Adw.SwitchRow(title="Guardar a última conversa", active=self.config["historico"])
-        historico.connect("notify::active", lambda r, _p: self._salvar("historico", r.get_active()))
+        def mudar_historico(linha, _p):
+            self._salvar("historico", linha.get_active())
+            if not linha.get_active():
+                nucleo.apagar_historico()
+        historico.connect("notify::active", mudar_historico)
         privacidade.add(historico)
         apagar = Adw.ActionRow(title="Apagar conversas")
         botao = Gtk.Button(label="Apagar", valign=Gtk.Align.CENTER)

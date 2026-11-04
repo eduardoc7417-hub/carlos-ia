@@ -40,3 +40,10 @@ Resultados em `TESTES.md`. Faltam: instalar app pela loja, vídeo, dual boot em 
 - A imagem de apresentação do instalador aparece em branco durante a instalação.
 - A base sid muda com frequência: a ISO final precisa fixar a data do repositório.
 - A distribuição pública da ISO exige oferecer o código-fonte dos pacotes GPL; isso ainda não foi resolvido.
+
+## Atualização (2026-11-04)
+
+- Correções da 0.10 no código: o Otimizador volta a aplicar depois de queda de energia (`tests/test_otimizador_queda.py`),
+  a Carlos AI não trava ao apagar o modelo enquanto carrega, modelo fora do catálogo volta ao padrão e desligar o histórico apaga a conversa.
+  Testes originais (`test_otimizador.py`, `test_nucleo.py`) passaram no Debian do WSL; a janela GTK não foi testada.
+- Carlos OS Puro: download do LFS 13.1 e compilação da etapa P1 em andamento com `puro/tudo.sh`. Nada do Puro foi testado ainda.

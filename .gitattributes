@@ -1,0 +1,2 @@
+# Scripts do Carlos OS Puro rodam no Linux: sempre com quebra de linha LF, mesmo num checkout no Windows.
+puro/** text eol=lf

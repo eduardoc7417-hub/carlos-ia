@@ -1,5 +1,4 @@
 import Gio from 'gi://Gio';
-import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import St from 'gi://St';
 
@@ -42,19 +41,11 @@ class AuroraButton extends PanelMenu.Button {
 export default class CarlosMenu extends Extension {
     enable() {
         this._button = new AuroraButton();
+        // Abrir direto na área de trabalho fica com a extensão no-overview@fthx.
         Main.panel.addToStatusArea(this.uuid, this._button, 0, 'left');
-        // O GNOME abre na visão geral: o Carlos OS abre direto na área de trabalho.
-        this._hideId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 1500, () => {
-            Main.overview.hide();
-            this._hideId = 0;
-            return GLib.SOURCE_REMOVE;
-        });
     }
 
     disable() {
-        if (this._hideId)
-            GLib.source_remove(this._hideId);
-        this._hideId = 0;
         this._button.destroy();
         this._button = null;
     }
