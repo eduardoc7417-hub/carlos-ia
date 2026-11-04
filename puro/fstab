@@ -1,0 +1,3 @@
+# Disco do Carlos OS na máquina virtual (virtio).
+# shortcut: caminho fixo /dev/vda1; para hardware real, troque por UUID=...
+/dev/vda1  /  ext4  defaults  1  1

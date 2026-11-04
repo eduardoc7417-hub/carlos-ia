@@ -1,6 +1,6 @@
 # Carlos OS Puro: plano
 
-Projeto à parte, em Linux From Scratch (LFS), sem Debian. Estado: **planejado, nada construído**.
+Projeto à parte, em Linux From Scratch (LFS), sem Debian. Estado: **P1 em construção** (desde 2026-11-04), com os scripts de `puro/`.
 Não substitui a linha em Debian, que continua sendo a versão para uso (`ROADMAP.md`).
 
 ## Regras

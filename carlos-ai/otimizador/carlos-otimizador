@@ -51,7 +51,13 @@ class Otimizador:
         self.arquivo_publico = Path(publico) / "estado.json"
         self.sugestoes = []
         self.situacoes = {}
-        self.originais = self._ler_json(self.arquivo_originais, {})
+        try:
+            self.boot = (self.raiz / "proc/sys/kernel/random/boot_id").read_text().strip()
+        except OSError:
+            self.boot = ""
+        salvos = self._ler_json(self.arquivo_originais, {})
+        # Depois de um desligamento sem reverter, o kernel já voltou ao padrão: os originais guardados não valem mais.
+        self.originais = salvos.get("ajustes", {}) if isinstance(salvos, dict) and salvos.get("boot") == self.boot else {}
 
     @staticmethod
     def _ler_json(caminho, padrao):
@@ -146,7 +152,7 @@ class Otimizador:
             else:
                 self._reverter_ajuste(ajuste)
                 self.situacoes[ajuste["id"]] = "em espera: condição não atendida"
-        self._gravar_json(self.arquivo_originais, self.originais)
+        self._gravar_json(self.arquivo_originais, {"boot": self.boot, "ajustes": self.originais})
         self.publicar()
 
     def _aplicar_ajuste(self, ajuste, caminhos):
@@ -183,7 +189,7 @@ class Otimizador:
         """Restaura o que foi alterado, também depois de uma queda do serviço."""
         for ajuste in AJUSTES:
             self._reverter_ajuste(ajuste)
-        self._gravar_json(self.arquivo_originais, self.originais)
+        self._gravar_json(self.arquivo_originais, {"boot": self.boot, "ajustes": self.originais})
         for ajuste in AJUSTES:
             self.situacoes[ajuste["id"]] = "revertido"
         self.publicar()

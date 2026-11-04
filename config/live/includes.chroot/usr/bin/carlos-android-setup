@@ -2,10 +2,13 @@
 # Baixa a imagem do Android. Em vídeo virtual, sem aceleração, usa renderização por software.
 set -e
 waydroid init
-driver=$(basename "$(readlink -f /sys/class/drm/card0/device/driver)" 2>/dev/null || true)
-case "$driver" in
-  virtio*|bochs*|qxl*|vmwgfx*|cirrus*)
-    sed -i -e 's/gralloc=gbm/gralloc=default/' -e 's/egl=mesa/egl=swiftshader/' /var/lib/waydroid/waydroid_base.prop
-    ;;
-esac
+# A placa real pode ser card1: o card0 às vezes é o vídeo provisório do boot (simpledrm).
+for placa in /sys/class/drm/card*/device/driver; do
+  case "$(basename "$(readlink -f "$placa")")" in
+    virtio*|bochs*|qxl*|vmwgfx*|cirrus*)
+      sed -i -e 's/gralloc=gbm/gralloc=default/' -e 's/egl=mesa/egl=swiftshader/' /var/lib/waydroid/waydroid_base.prop
+      break
+      ;;
+  esac
+done
 systemctl restart waydroid-container
