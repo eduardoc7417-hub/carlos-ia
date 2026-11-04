@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#100d20">
+  <meta name="description" content="Conheça o Carlos OS Aurora: uma distribuição Linux experimental com identidade própria. Veja a demonstração real e acompanhe o início do Carlos OS Puro.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Carlos OS Aurora">
+  <meta property="og:description" content="Uma experiência Linux experimental, com identidade Aurora. Veja a demonstração real do sistema.">
+  <meta property="og:image" content="imagens/area-de-trabalho.png">
+  <title>Carlos OS Aurora — projeto em desenvolvimento</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0915;
+      --surface: #151223;
+      --surface-2: #1c1830;
+      --text: #f7f3ff;
+      --muted: #bdb6d1;
+      --accent: #bd91ff;
+      --accent-2: #78d9e8;
+      --line: rgba(229, 215, 255, .15);
+      --max: 1120px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at 84% 9%, rgba(112, 69, 190, .28), transparent 36rem),
+        radial-gradient(ellipse at 8% 33%, rgba(41, 111, 139, .12), transparent 34rem),
+        var(--bg);
+      font: 16px/1.65 system-ui, sans-serif;
+    }
+    a { color: inherit; }
+    .wrap { width: min(var(--max), calc(100% - 40px)); margin-inline: auto; }
+    .topbar { padding: 22px 0; border-bottom: 1px solid var(--line); }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; font-weight: 700; letter-spacing: .02em; }
+    .brand-mark { width: 34px; height: 34px; border-radius: 12px; background: linear-gradient(145deg, #dbb6ff, #7b4fd1 58%, #4bbed0); box-shadow: 0 0 30px rgba(168, 112, 255, .28); }
+    .nav-note { color: var(--muted); font-size: .9rem; }
+    .hero { display: grid; grid-template-columns: 1.02fr .98fr; align-items: center; gap: 54px; padding: 72px 0 58px; }
+    .eyebrow { color: var(--accent-2); text-transform: uppercase; letter-spacing: .14em; font-size: .76rem; font-weight: 750; }
+    h1 { margin: 14px 0 18px; max-width: 700px; font-size: clamp(2.7rem, 6vw, 5rem); line-height: 1.02; letter-spacing: -.055em; }
+    .lead { max-width: 590px; color: var(--muted); font-size: 1.13rem; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .button { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 11px 18px; border-radius: 14px; border: 1px solid var(--line); text-decoration: none; font-weight: 700; transition: transform .18s ease, border-color .18s ease; }
+    .button:hover { transform: translateY(-2px); border-color: rgba(219, 182, 255, .6); }
+    .button.primary { color: #170e25; background: linear-gradient(110deg, #d9b6ff, #91e2eb); border: 0; }
+    .hero-art { position: relative; }
+    .hero-art::before { content: ""; position: absolute; inset: 14% 12%; background: #9566e8; filter: blur(70px); opacity: .25; }
+    .hero-art img { position: relative; display: block; width: 100%; border: 1px solid var(--line); border-radius: 24px; box-shadow: 0 30px 90px rgba(0,0,0,.45); }
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+    .chip { padding: 6px 11px; border: 1px solid var(--line); border-radius: 999px; color: #ddd4f1; font-size: .82rem; background: rgba(255,255,255,.035); }
+    section { padding: 58px 0; }
+    .section-head { max-width: 720px; margin-bottom: 24px; }
+    h2 { margin: 0 0 10px; font-size: clamp(1.9rem, 3.5vw, 2.8rem); line-height: 1.12; letter-spacing: -.035em; }
+    .section-head p, .small { color: var(--muted); }
+    .video-card { padding: 14px; border: 1px solid var(--line); border-radius: 24px; background: linear-gradient(135deg, rgba(30,25,50,.96), rgba(17,15,29,.96)); }
+    video { display: block; width: 100%; max-height: 680px; aspect-ratio: 16 / 10; object-fit: contain; border-radius: 15px; background: #08070d; }
+    .video-caption { display: flex; justify-content: space-between; align-items: baseline; gap: 18px; padding: 14px 5px 2px; }
+    .video-caption strong { font-size: 1.02rem; }
+    .video-caption span { color: var(--muted); font-size: .9rem; }
+    .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .card { min-height: 245px; padding: 25px; border: 1px solid var(--line); border-radius: 22px; background: linear-gradient(150deg, rgba(31,26,49,.96), rgba(17,15,29,.88)); }
+    .card .label { color: var(--accent-2); text-transform: uppercase; letter-spacing: .12em; font-size: .73rem; font-weight: 750; }
+    .card h3 { margin: 8px 0; font-size: 1.55rem; }
+    .card p { margin: 0; color: var(--muted); }
+    .status { display: inline-flex; margin-top: 20px; padding: 6px 10px; border: 1px solid rgba(189,145,255,.28); border-radius: 999px; color: #e3cbff; font-size: .82rem; }
+    .access { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 24px; padding: 28px; border: 1px solid var(--line); border-radius: 22px; background: linear-gradient(110deg, rgba(93,64,145,.25), rgba(55,135,151,.13)); }
+    .access p { max-width: 680px; margin-bottom: 0; color: var(--muted); }
+    .footer { margin-top: 40px; padding: 24px 0 40px; border-top: 1px solid var(--line); color: var(--muted); font-size: .88rem; }
+    @media (max-width: 780px) {
+      .hero { grid-template-columns: 1fr; gap: 32px; padding-top: 48px; }
+      .hero-art { max-width: 640px; }
+      .cards { grid-template-columns: 1fr; }
+      .access { grid-template-columns: 1fr; }
+      .nav-note { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .button { transition: none; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="#inicio" aria-label="Carlos OS Aurora, início"><span class="brand-mark" aria-hidden="true"></span><span>Carlos OS Aurora</span></a>
+      <span class="nav-note">Projeto independente · em desenvolvimento</span>
+    </div>
+  </header>
+  <main id="inicio" class="wrap">
+    <section class="hero" aria-labelledby="titulo">
+      <div>
+        <div class="eyebrow">Uma experiência Linux em construção</div>
+        <h1 id="titulo">Tecnologia com identidade Aurora.</h1>
+        <p class="lead">Carlos OS Aurora é um projeto experimental de sistema Linux. Conheça a demonstração real da linha Debian e veja o início do Carlos OS Puro, construído a partir do Linux From Scratch.</p>
+        <div class="actions">
+          <a class="button primary" href="#demonstracao">Assistir à demonstração</a>
+          <a class="button" href="#puro">Conhecer o Carlos OS Puro</a>
+        </div>
+        <div class="chips" aria-label="Estado do projeto">
+          <span class="chip">Linha Debian · 0.9 em validação</span>
+          <span class="chip">Carlos OS Puro · 0.0.0</span>
+        </div>
+      </div>
+      <div class="hero-art"><img src="imagens/area-de-trabalho.png" alt="Área de trabalho Aurora em uma demonstração do Carlos OS" fetchpriority="high"></div>
+    </section>
+
+    <section id="demonstracao" aria-labelledby="demo-title">
+      <div class="section-head">
+        <div class="eyebrow">Gravação de tela real</div>
+        <h2 id="demo-title">Veja o sistema em funcionamento.</h2>
+        <p>Esta gravação mostra a linha Debian 0.9 em uma máquina virtual. Ela não é uma demonstração do Carlos OS Puro.</p>
+      </div>
+      <div class="video-card">
+        <video controls preload="metadata" poster="imagens/area-de-trabalho.png" aria-label="Gravação real da tela do Carlos OS Aurora, linha Debian 0.9">
+          <source src="video/carlos-os-aurora-0.9.mp4" type="video/mp4">
+          Seu navegador não consegue reproduzir este vídeo. Atualize o navegador para assistir.
+        </video>
+        <div class="video-caption"><strong>Carlos OS Aurora · linha Debian 0.9</strong><span>Gravação real da tela · 1 min 8 s</span></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="trilhas-title">
+      <div class="section-head">
+        <div class="eyebrow">Duas trilhas</div>
+        <h2 id="trilhas-title">O que existe hoje.</h2>
+        <p>O projeto tem uma linha baseada em Debian e uma nova linha independente em LFS. Os estados abaixo evitam confundir a demonstração com o Carlos OS Puro.</p>
+      </div>
+      <div class="cards">
+        <article class="card">
+          <div class="label">Linha Debian</div>
+          <h3>Carlos OS Aurora 0.9</h3>
+          <p>Imagem gerada e instalação em VM UEFI testada. A validação continua: há itens pendentes e ainda não existe um pacote público de lançamento com fontes e instruções completos.</p>
+          <span class="status">Em validação · sem download público</span>
+        </article>
+        <article class="card" id="puro">
+          <div class="label">Linux From Scratch</div>
+          <h3>Carlos OS Puro 0.0.0</h3>
+          <p>Projeto em fase inicial. Ainda nada foi compilado; a primeira meta é um sistema em modo texto com systemd que inicie em VM UEFI, tenha login e rede e reinicie limpo.</p>
+          <span class="status">P1 por iniciar · sem imagem disponível</span>
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="acesso-title">
+      <div class="access">
+        <div>
+          <div class="eyebrow">Acesso ao projeto</div>
+          <h2 id="acesso-title">O download vem depois dos testes.</h2>
+          <p>Por enquanto, esta página oferece uma demonstração visual. Quando uma imagem estiver pronta e validada, o acesso será por um download direto com instruções para testar em máquina virtual.</p>
+        </div>
+        <span class="chip" aria-label="Download público indisponível">Download ainda indisponível</span>
+      </div>
+    </section>
+  </main>
+  <footer class="footer"><div class="wrap">Carlos OS Aurora · projeto experimental independente · informações atualizadas conforme as etapas forem testadas.</div></footer>
+</body>
+</html>
